@@ -1,0 +1,80 @@
+@import './base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  width: 100%;
+  margin: 0 auto;
+  /* padding: 2rem; */
+  font-weight: normal;
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+main .cart-products-wrapper {
+  height: calc(100svh - 196px);
+  scrollbar-width: none;
+}
+
+main .p-carousel-indicators { 
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+main .p-carousel-indicator { 
+  background-color: #1f2937;
+}
+
+main .p-highlight { 
+  background-color: white
+}
+
+/* a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+} */
+/* 
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+} */
+
+/* .image-container {
+  width: 100%;
+  padding-top: 75%;
+  position: relative;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+} */
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+  }
+
+  /* #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  } */
+}

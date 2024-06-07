@@ -1,0 +1,54 @@
+<script setup lang="ts">
+import Categories from "../components/Categories.vue";
+import Products from "../components/Products.vue";
+import { ref, onMounted } from "vue";
+import { makeHttpRequest } from "@/api/httpRequest";
+
+// Define state variables
+const categories = ref([]);
+const products = ref([]);
+
+// Function to fetch product data
+const fetchGetCategoriesData = async () => {
+  try {
+    const data = await makeHttpRequest(
+      "GET",
+      "/categories",
+      null,
+      "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
+    ); // Adjust endpoint as needed
+    categories.value = data.items;
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+  }
+};
+
+const fetchProductData = async () => {
+  try {
+    const data = await makeHttpRequest(
+      "GET",
+      "/products",
+      null,
+      "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
+    ); // Adjust endpoint as needed
+    products.value = data.items;
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+  }
+};
+
+// Fetch data when the component is mounted
+onMounted(() => {
+  fetchGetCategoriesData()
+  fetchProductData();
+});
+</script>
+
+<template>
+  <main>
+    <!-- <h2 class="text-xl text-white my-4">Categories</h2> -->
+    <Categories :categories="categories" />
+    <h2 class="text-xl text-white mt-10 mb-4">Products</h2>
+    <Products :products="products" />
+  </main>
+</template>
