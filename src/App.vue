@@ -6,7 +6,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 const route = useRoute();
 console.log(route.name)
 const store = useCartItemsStore();
-const { cartItemsIds, addItemToCart } = store;
+const { cartItemsIds, cartQuery,  addItemToCart } = store;
 
 const isScrolled = ref(false);
 
@@ -28,6 +28,17 @@ const headerClass = computed(() =>
     : 'px-8 bg-gray-800'
 );
 
+const cartLink = computed(() => {
+  console.log(cartQuery)
+  if(cartQuery !== "") {
+    return '/cart?cart=' + cartQuery
+  } if (cartItemsIds.length !== 0) {
+    return '/cart?cart=' + cartItemsIds
+  } else {
+    return '/cart?cart=empty'
+  }
+});
+
 </script>
 
 <template>
@@ -48,7 +59,7 @@ const headerClass = computed(() =>
       <RouterLink to="/">Home</RouterLink>
 
       <div class="flex flex-1 lg:justify-end cursor-pointer">
-        <RouterLink to="/cart"
+        <RouterLink :to="cartLink"
           id="dropdownNotificationButton"
           data-dropdown-toggle="dropdownNotification"
           class="relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"

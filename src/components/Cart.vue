@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { defineProps } from "vue";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { makeHttpRequest } from "@/api/httpRequest";
+import { watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps<{
-  cartProducts: []; // Adjust the type according to your product object structure
+  cartProducts: [];
+  allProducts: []; // Adjust the type according to your product object structure
 }>();
 
 const store = useCartItemsStore();
-const { cartItemsIds, cartItems, addItemToCart, removeItemToCart } = store;
-// const showWholeDescription = ref({});
+const route = useRoute();
+const router = useRouter();
+const cartQuery = ref("");
+const {
+  cartItemsIds,
+  cartItems,
+  addItemToCart,
+  removeItemToCart,
+  deleteItemFromCart,
+} = store;
 
-// const toggleDescription = (id) => {
-//   showWholeDescription.value[id] = !showWholeDescription.value[id];
-// };
-console.log(cartItems)
+const totalPriceOfCartItems = ref(0);
+
 const fetchCalculate = async (data) => {
   data.map(() => {});
   // Step 1: Create a frequency map
@@ -44,7 +53,42 @@ const fetchCalculate = async (data) => {
   }
 };
 
-console.log(props.cartProducts);
+onMounted(async () => {
+  await router.isReady();
+  cartQuery.value = route.query.cart;
+  props.cartProducts.map(({ id, price }) => {
+    console.log("sdf")
+    cartItemsIds.map((cartItemId) => {
+      if(id === cartItemId){
+        totalPriceOfCartItems.value += price;
+      }
+    })
+  });
+});
+
+watch(() => route.query.cart, (newCartQuery) => {
+  cartQuery.value = newCartQuery;
+  totalPriceOfCartItems.value = 0
+  props.cartProducts.map(({ id, price }) => {
+    console.log("sdf")
+    cartItemsIds.map((cartItemId) => {
+      if(id === cartItemId){
+        totalPriceOfCartItems.value += price;
+      }
+    })
+  });
+});
+
+watch(
+  () => cartItemsIds,
+  (newIds) => {
+    const newTotal = newIds.reduce((total, id) => {
+      const product = props.cartProducts.find((product) => product.id === id);
+      return product ? total + product.price : total;
+    }, 0);
+    totalPriceOfCartItems.value = newTotal;
+  }
+);
 </script>
 
 <template>
@@ -52,8 +96,12 @@ console.log(props.cartProducts);
     <div class="col-span-2">
       <h1 class="text-xl">YOUR BAG</h1>
       <p>TOTAL: ({{ cartItemsIds.length }} item) $353</p>
-      <div class="cart-products-wrapper overflow-y-scroll pr-7 mt-6">
+      <div
+        class="cart-products-wrapper overflow-y-scroll pr-7 mt-6"
+        :key="cartQuery"
+      >
         <div
+          v-if="cartQuery !== 'empty'"
           v-for="(
             { id, name, description, imageUrl, price }, index
           ) in props.cartProducts"
@@ -80,7 +128,14 @@ console.log(props.cartProducts);
               >
             </div>
             <div class="flex flex-row gap-x-4">
-              <div class="w-5 cursor-pointer" @click="removeItemToCart(id)">
+              <div
+                class="w-5 cursor-pointer"
+                @click="
+                  () => {
+                    if (cartItems[id] > 1) removeItemToCart(id);
+                  }
+                "
+              >
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -106,8 +161,11 @@ console.log(props.cartProducts);
                   </g>
                 </svg>
               </div>
-              <span>{{cartItems[id]}}</span>
-              <div class="w-5 cursor-pointer rotate-45"  @click="addItemToCart(id)">
+              <span>{{ cartItems[id] }}</span>
+              <div
+                class="w-5 cursor-pointer rotate-45"
+                @click="addItemToCart(id)"
+              >
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -163,6 +221,45 @@ console.log(props.cartProducts);
             </svg>
           </div>
         </div>
+        <div v-if="cartQuery === 'empty'">YOUR BAG IS EMPTY</div>
+        <div
+          class="flex flex-row gap-x-4 overflow-x-scroll"
+          v-if="cartQuery === 'empty' && props.allProducts.length !== 0"
+        >
+          <div
+            v-for="(
+              { id, name, description, imageUrl, price }, index
+            ) in props.allProducts"
+            :key="index"
+            class="flex flex-col justify-between max-w-sm shadow min-w-[200px] mt-10"
+          >
+            <div>
+              <a :href="`/product?id=${id}`">
+                <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
+              </a>
+              <div class="py-5">
+                <a href="#">
+                  <h5
+                    class="text-md font-semibold tracking-tight text-gray-900 dark:text-white"
+                  >
+                    {{ name }}
+                  </h5>
+                </a>
+              </div>
+            </div>
+            <div class="pb-5 flex items-center justify-between">
+              <span class="text-base font-bold text-gray-900 dark:text-white"
+                >${{ price }}</span
+              >
+              <button
+                @click="addItemToCart(id)"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3.5 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Buy
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="flex flex-col gap-y-6 mt-20">
@@ -170,7 +267,7 @@ console.log(props.cartProducts);
       <div class="flex flex-col gap-y-3">
         <div class="flex flex-row justify-between items-center">
           <p>{{ cartItemsIds.length }} items</p>
-          <p>aq chawere saidan unda wamovides cifri</p>
+          <p>${{ totalPriceOfCartItems }}</p>
         </div>
         <div class="flex flex-row justify-between items-center">
           <p>Sales Tax</p>

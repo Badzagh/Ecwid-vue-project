@@ -43,6 +43,12 @@ console.log(props.product);
         </a>
       </div>
       <p class="text-base" v-html="props.product.description"></p>
+      <div class="flex flex-row gap-x-4 my-auto">
+        <p v-if="props.product?.options" class="border border-white py-2 px-4 rounded-md" v-for="({ text }, index) in props.product?.options[0]?.choices">
+          {{ text }}
+        </p>
+      </div>
+
       <div class="mt-auto flex items-center justify-between">
         <span class="text-3xl font-bold text-gray-900 dark:text-white"
           >${{ props.product.price }}</span
