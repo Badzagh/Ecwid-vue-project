@@ -24,6 +24,8 @@ const {
   deleteItemFromCart,
 } = store;
 
+const hoveredImageIndex = ref<number>(-1);
+
 const totalPriceOfCartItems = ref(0);
 
 const fetchCalculate = async (data) => {
@@ -121,14 +123,14 @@ const responsiveOptions = ref([
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-x-10">
-    <div class="col-span-2">
+  <div class="flex flex-col xl:grid xl:grid-cols-3 gap-x-10">
+    <div class="xl:col-span-2">
       <h1 class="text-xl">YOUR BAG</h1>
       <p>
         TOTAL: ({{ cartItemsIds.length }} item) ${{ totalPriceOfCartItems }}
       </p>
       <div
-        class="cart-products-wrapper overflow-y-scroll pr-7 mt-6"
+        class="cart-products-wrapper overflow-y-scroll pr-7 mt-6 !h-[300px] xl:h-auto"
         :key="cartQuery"
       >
         <div
@@ -136,13 +138,19 @@ const responsiveOptions = ref([
           v-for="(
             { id, name, description, imageUrl, price, options, media }, index
           ) in props.cartProducts"
-          class="mt-6 flex flex-row gap-x-6 h-fit border border-gray-700 rounded-lg relative"
+          class="mt-6 flex md:flex-row gap-x-6 h-fit border border-gray-700 rounded-lg relative"
         >
           <a :href="`/products/product-detail?id=${id}`">
             <img
               class="rounded-t-lg max-w-[250px] aspect-[1/1]"
-              :src="imageUrl"
+              :src="
+                hoveredImageIndex === index
+                  ? media.images[1].imageOriginalUrl
+                  : media.images[0].imageOriginalUrl
+              "
               alt="product image"
+              @mouseover="hoveredImageIndex = index"
+              @mouseleave="hoveredImageIndex = -1"
             />
           </a>
           <!-- <Carousel

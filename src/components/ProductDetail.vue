@@ -18,9 +18,9 @@ console.log(props.product);
 </script>
 
 <template>
-  <div class="flex flex-row gap-x-6">
+  <div class="flex flex-col xl:flex-row gap-x-6">
     <div
-      class="flex flex-col justify-between max-w-sm bg-gray-800 border border-gray-700 rounded-lg shadow"
+      class="flex flex-col justify-between max-w-sm  mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow"
     >
       <div>
         <a :href="`/products/product-detail?id=${id}`">
@@ -43,13 +43,13 @@ console.log(props.product);
         </a>
       </div>
       <p class="text-base" v-html="props.product.description"></p>
-      <div class="flex flex-row gap-x-4 my-auto">
+      <div class="flex flex-row gap-x-4 mt-4 xl:my-auto">
         <p v-if="props.product?.options" class="border border-white py-2 px-4 rounded-md" v-for="({ text }, index) in props.product?.options[0]?.choices">
           {{ text }}
         </p>
       </div>
 
-      <div class="mt-auto flex items-center justify-between">
+      <div class="mt-10 xl:mt-auto flex items-center justify-between">
         <span class="text-3xl font-bold text-gray-900 dark:text-white"
           >${{ props.product.price }}</span
         >
