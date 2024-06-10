@@ -78,7 +78,7 @@ const breadcrumbs = computed(() => {
     >
       <RouterLink to="/">Home</RouterLink>
 
-      <div class="flex flex-1 lg:justify-end cursor-pointer">
+      <div class="flex flex-1 justify-end">
         <RouterLink
           :to="cartLink"
           id="dropdownNotificationButton"
@@ -102,7 +102,7 @@ const breadcrumbs = computed(() => {
       </div>
     </nav>
   </header>
-  <div class="p-8">
+  <div class="px-3 py-8 md:p-8">
     <nav v-if="route.name !== 'home'" class="flex mx-auto max-w-[1280px] mb-10" aria-label="Breadcrumb">
       <ol
         class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse"

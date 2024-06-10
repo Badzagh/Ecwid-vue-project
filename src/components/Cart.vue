@@ -130,7 +130,7 @@ const responsiveOptions = ref([
         TOTAL: ({{ cartItemsIds.length }} item) ${{ totalPriceOfCartItems }}
       </p>
       <div
-        class="cart-products-wrapper overflow-y-scroll pr-7 mt-6 !h-[300px] xl:h-auto"
+        class="cart-products-wrapper overflow-y-scroll pr-3.5 sm:pr-7 mt-6 !h-[180px] sm:!h-[280px] !lg:h-[calc(100svh - 196px)]"
         :key="cartQuery"
       >
         <div
@@ -138,11 +138,11 @@ const responsiveOptions = ref([
           v-for="(
             { id, name, description, imageUrl, price, options, media }, index
           ) in props.cartProducts"
-          class="mt-6 flex md:flex-row gap-x-6 h-fit border border-gray-700 rounded-lg relative"
+          class="mt-6 flex md:flex-row gap-x-0 sm:gap-x-6 h-fit border border-gray-700 rounded-lg relative"
         >
           <a :href="`/products/product-detail?id=${id}`">
             <img
-              class="rounded-t-lg max-w-[250px] aspect-[1/1]"
+              class="rounded-t-lg max-w-[150px] sm:max-w-[250px] aspect-[1/1]"
               :src="
                 hoveredImageIndex === index
                   ? media.images[1].imageOriginalUrl
@@ -174,23 +174,26 @@ const responsiveOptions = ref([
               </a>
             </template>
           </Carousel> -->
-          <div class="w-full flex flex-col justify-between p-5">
-            <div class="w-full flex flex-row justify-between">
+          <div class="w-full flex flex-col justify-between p-2 md:p-5">
+            <div
+              class="w-full flex flex-col gap-y-2 md:flex-row justify-between"
+            >
               <a href="#">
                 <h5
-                  class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
+                  class="text-xs sm:text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
                 >
                   {{ name }}
                 </h5>
               </a>
-              <span class="text-3xl font-bold text-gray-900 dark:text-white"
+              <span
+                class="text-sm sm:text-3xl font-bold text-gray-900 dark:text-white"
                 >${{ price }}</span
               >
             </div>
             <div class="flex flex-row gap-x-4 mb-auto mt-4">
               <p
                 v-if="options"
-                class="border border-white py-2 px-4 rounded-md text-xs"
+                class="border border-white py-1.5 px-2.5 md:py-2 md:px-4 rounded-md text-[8px] md:text-xs"
                 v-for="({ text }, index) in options[0]?.choices"
               >
                 {{ text }}
@@ -264,7 +267,7 @@ const responsiveOptions = ref([
           </div>
 
           <div
-            class="w-10 absolute -right-4 -top-4 cursor-pointer"
+            class="w-7 sm:w-10 absolute -right-4 -top-4 cursor-pointer"
             @click="deleteItemFromCart(id)"
           >
             <svg
@@ -334,7 +337,7 @@ const responsiveOptions = ref([
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-y-6 mt-20">
+    <div class="flex flex-col gap-y-6 mt-4 xl:mt-20">
       <h2>ORDER SUMMARY</h2>
       <div class="flex flex-col gap-y-3">
         <div class="flex flex-row justify-between items-center">
@@ -355,11 +358,11 @@ const responsiveOptions = ref([
         <p>Total</p>
         <p>${{ totalPriceOfCartItems }}</p>
       </div>
-      <RouterLink :to="'/buy-success'">
+      <RouterLink :to="'/order-success'">
         <button
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Buy
+          Place order
         </button>
       </RouterLink>
     </div>
