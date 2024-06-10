@@ -20,6 +20,7 @@ const {
   cartItems,
   addItemToCart,
   removeItemToCart,
+  getIdsFromQuery,
   deleteItemFromCart,
 } = store;
 
@@ -44,8 +45,8 @@ const fetchCalculate = async (data) => {
   try {
     const res = await makeHttpRequest(
       "POST",
-      `/order/calculate`,
-      { items: formattedData },
+      `/order`,
+      { total: 1000 },
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
     ); // Adjust endpoint as needed
   } catch (error) {
@@ -56,46 +57,76 @@ const fetchCalculate = async (data) => {
 onMounted(async () => {
   await router.isReady();
   cartQuery.value = route.query.cart;
+  console.log("sdf");
   props.cartProducts.map(({ id, price }) => {
-    console.log("sdf")
+    console.log("sdf");
+    console.log(cartItemsIds);
     cartItemsIds.map((cartItemId) => {
-      if(id === cartItemId){
+      if (id === Number(cartItemId)) {
         totalPriceOfCartItems.value += price;
       }
-    })
-  });
-});
-
-watch(() => route.query.cart, (newCartQuery) => {
-  cartQuery.value = newCartQuery;
-  totalPriceOfCartItems.value = 0
-  props.cartProducts.map(({ id, price }) => {
-    console.log("sdf")
-    cartItemsIds.map((cartItemId) => {
-      if(id === cartItemId){
-        totalPriceOfCartItems.value += price;
-      }
-    })
+    });
   });
 });
 
 watch(
-  () => cartItemsIds,
-  (newIds) => {
-    const newTotal = newIds.reduce((total, id) => {
-      const product = props.cartProducts.find((product) => product.id === id);
-      return product ? total + product.price : total;
-    }, 0);
-    totalPriceOfCartItems.value = newTotal;
+  () => route.query.cart,
+  (newCartQuery) => {
+    cartQuery.value = newCartQuery;
   }
 );
+
+watch(
+  () => props.cartProducts,
+  (newCartProducts) => {
+    totalPriceOfCartItems.value = 0;
+    newCartProducts.map(({ id, price }) => {
+      console.log("sdf");
+      cartItemsIds.map((cartItemId) => {
+        if (id === Number(cartItemId)) {
+          totalPriceOfCartItems.value += price;
+        }
+      });
+    });
+    // const newTotal = newIds.reduce((total, id) => {
+    //   const product = props.cartProducts.find((product) => product.id === id);
+    //   return product ? total + product.price : total;
+    // }, 0);
+    // totalPriceOfCartItems.value = newTotal;
+  }
+);
+
+const responsiveOptions = ref([
+  // {
+  //   breakpoint: "1400px",
+  //   numVisible: 2,
+  //   numScroll: 1,
+  // },
+  // {
+  //   breakpoint: "1199px",
+  //   numVisible: 3,
+  //   numScroll: 1,
+  // },
+  // {
+  //   breakpoint: "767px",
+  //   numVisible: 2,
+  //   numScroll: 1,
+  // },
+  {
+    breakpoint: "575px",
+    numVisible: 1,
+    numScroll: 1,
+  },
+]);
 </script>
 
 <template>
   <div class="grid grid-cols-3 gap-x-10">
     <div class="col-span-2">
       <h1 class="text-xl">YOUR BAG</h1>
-      <p>TOTAL: ({{ cartItemsIds.length }} item) $353</p>
+      <p>
+        TOTAL: ({{ cartItemsIds.length }} item) ${{ totalPriceOfCartItems }}
+      </p>
       <div
         class="cart-products-wrapper overflow-y-scroll pr-7 mt-6"
         :key="cartQuery"
@@ -103,17 +134,38 @@ watch(
         <div
           v-if="cartQuery !== 'empty'"
           v-for="(
-            { id, name, description, imageUrl, price }, index
+            { id, name, description, imageUrl, price, options, media }, index
           ) in props.cartProducts"
           class="mt-6 flex flex-row gap-x-6 h-fit border border-gray-700 rounded-lg relative"
         >
-          <a :href="`/product?id=${id}`">
+          <a :href="`/products/product-detail?id=${id}`">
             <img
               class="rounded-t-lg max-w-[250px] aspect-[1/1]"
               :src="imageUrl"
               alt="product image"
             />
           </a>
+          <!-- <Carousel
+            :value="media.images"
+            :numVisible="1"
+            :numScroll="1"
+            :responsiveOptions="responsiveOptions"
+            circular
+            :autoplayInterval="3000"
+            :show-navigators="false"
+            :show-indicators="false"
+            :class="'!w-fit'"
+          >
+            <template #item="slotProps">
+              <a :href="`/products/product-detail?id=${id}`">
+                <img
+                  class="max-w-[250px] rounded-t-lg  aspect-[1/1]"
+                  :src="slotProps.data.imageOriginalUrl"
+                  alt="product image"
+                />
+              </a>
+            </template>
+          </Carousel> -->
           <div class="w-full flex flex-col justify-between p-5">
             <div class="w-full flex flex-row justify-between">
               <a href="#">
@@ -126,6 +178,15 @@ watch(
               <span class="text-3xl font-bold text-gray-900 dark:text-white"
                 >${{ price }}</span
               >
+            </div>
+            <div class="flex flex-row gap-x-4 mb-auto mt-4">
+              <p
+                v-if="options"
+                class="border border-white py-2 px-4 rounded-md text-xs"
+                v-for="({ text }, index) in options[0]?.choices"
+              >
+                {{ text }}
+              </p>
             </div>
             <div class="flex flex-row gap-x-4">
               <div
@@ -194,7 +255,10 @@ watch(
             </div>
           </div>
 
-          <div class="w-10 absolute -right-4 -top-4 cursor-pointer">
+          <div
+            class="w-10 absolute -right-4 -top-4 cursor-pointer"
+            @click="deleteItemFromCart(id)"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -234,7 +298,7 @@ watch(
             class="flex flex-col justify-between max-w-sm shadow min-w-[200px] mt-10"
           >
             <div>
-              <a :href="`/product?id=${id}`">
+              <a :href="`/products/product-detail?id=${id}`">
                 <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
               </a>
               <div class="py-5">
@@ -269,10 +333,10 @@ watch(
           <p>{{ cartItemsIds.length }} items</p>
           <p>${{ totalPriceOfCartItems }}</p>
         </div>
-        <div class="flex flex-row justify-between items-center">
+        <!-- <div class="flex flex-row justify-between items-center">
           <p>Sales Tax</p>
           <p>$33.60</p>
-        </div>
+        </div> -->
         <div class="flex flex-row justify-between items-center">
           <p>Delivery</p>
           <p>Free</p>
@@ -281,14 +345,15 @@ watch(
 
       <div class="flex flex-row justify-between items-center">
         <p>Total</p>
-        <p>$313.60</p>
+        <p>${{ totalPriceOfCartItems }}</p>
       </div>
-      <button
-        @click="fetchCalculate(cartItemsIds)"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Buy
-      </button>
+      <RouterLink :to="'/buy-success'">
+        <button
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Buy
+        </button>
+      </RouterLink>
     </div>
   </div>
 </template>

@@ -52,7 +52,7 @@ const productsGridColsClass = computed(() => {
       class="flex flex-col justify-between max-w-sm shadow"
     >
       <div>
-        <a :href="`/product?id=${id}`">
+        <a :href="`/products/product-detail?id=${id}`">
           <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
         </a>
         <div class="py-5">

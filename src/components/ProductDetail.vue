@@ -23,7 +23,7 @@ console.log(props.product);
       class="flex flex-col justify-between max-w-sm bg-gray-800 border border-gray-700 rounded-lg shadow"
     >
       <div>
-        <a :href="`/product?id=${id}`">
+        <a :href="`/products/product-detail?id=${id}`">
           <img
             class="rounded-t-lg"
             :src="props.product.imageUrl"

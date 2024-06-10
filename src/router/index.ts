@@ -21,8 +21,8 @@ const router = createRouter({
       component: ProductsView
     },
     {
-      path: '/product',
-      name: 'product',
+      path: '/products/product-detail',
+      name: 'product-detail',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -31,6 +31,14 @@ const router = createRouter({
     {
       path: '/cart',
       name: 'cart',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: CartView
+    },
+    {
+      path: '/buy-success',
+      name: 'buy-success',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
