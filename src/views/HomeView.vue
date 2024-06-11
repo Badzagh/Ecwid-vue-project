@@ -51,7 +51,6 @@ onMounted(() => {
 
 <template>
   <main>
-    <!-- <h2 class="text-xl text-white my-4">Categories</h2> -->
     <Categories :categories="categories" />
     <h2 class="text-xl text-white mt-10 mb-4">Products</h2>
     <Products :products="products" />

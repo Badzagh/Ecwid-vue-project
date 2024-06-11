@@ -7,23 +7,25 @@ import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { Ref } from "vue";
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  price: number;
-  options: {
-    choices: { text: string }[];
-  }[];
-  media: {
-    images: { imageOriginalUrl: string }[];
-  };
-}
+import { type CartType } from '../../api/types/cart/CartType'
+
+// interface Product {
+//   id: number;
+//   name: string;
+//   description: string;
+//   imageUrl: string;
+//   price: number;
+//   options: {
+//     choices: { text: string }[];
+//   }[];
+//   media: {
+//     images: { imageOriginalUrl: string }[];
+//   };
+// }
 
 const props = defineProps<{
-  cartProducts: Product[];
-  allProducts: Product[]; // Adjust the type according to your product object structure
+  cartProducts: CartType[];
+  allProducts: CartType[]; // Adjust the type according to your product object structure
 }>();
 
 const route = useRoute();

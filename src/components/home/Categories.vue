@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import Carousel from "primevue/carousel";
-import { watch } from "vue";
-import { nextTick } from "vue";
-import { onMounted } from "vue";
 import { ref, watchEffect } from "vue";
 
 type CategoriesType = {

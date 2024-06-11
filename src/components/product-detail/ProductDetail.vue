@@ -2,27 +2,11 @@
 import { ref } from "vue";
 import { defineProps } from "vue";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
+import { type ProductDetailType } from '../../api/types/product-detail/ProductDetailType'
 
-
-interface ProductOptionChoice {
-  text: string;
-}
-
-interface ProductOption {
-  choices: ProductOptionChoice[];
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  options?: ProductOption[];
-}
 
 const props = defineProps<{
-  product: Product; // Adjust the type according to your product object structure
+  product: ProductDetailType; // Adjust the type according to your product object structure
 }>();
 
 const store = useCartItemsStore();
