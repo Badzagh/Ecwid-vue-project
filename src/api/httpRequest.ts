@@ -4,16 +4,28 @@ import Cookies from 'universal-cookie';
 
 const apiUrl = "https://app.ecwid.com/api/v3/58958138";
 
+type ConfigT = {
+  method: "GET" | "POST" | "PUT" | "DELETE";
+  url: string;
+  data?: any;
+  token?: string;
+  headers: {
+    'Accept-Language': string,
+    Authorization?: string,
+    'Content-Type'?: string
+  };
+};
+
 export const makeHttpRequest = async (
-  method,
-  url,
-  data = null,
-  token = null,
-  ContentType = null,
-  type = null
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  url: string,
+  data?: any | null,
+  token?: string | null,
+  ContentType?: string | null,
+  type?: string | null
 ) => {
   const cookies = new Cookies();
-  const config = {
+  const config: ConfigT = {
     method,
     url: `${apiUrl}${url}`,
     data,
@@ -43,17 +55,7 @@ export const makeHttpRequest = async (
     } else {
       return response.data;
     }
-  } catch (error) {
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          cookies.remove('token');
-          break;
-        default:
-          throw new Error('Unhandled error status');
-      }
-    } else {
-      throw new Error('An error occurred while making the request');
-    }
+  } catch (error: any) {
+    throw new Error('An error occurred while making the request');
   }
 };

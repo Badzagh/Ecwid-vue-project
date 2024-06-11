@@ -10,8 +10,6 @@ const categoryId = ref("");
 
 categoryId.value = route.query.id as string;
 
-
-// Function to fetch product data
 const fetchProductData = async () => {
   try {
     const data = await makeHttpRequest(

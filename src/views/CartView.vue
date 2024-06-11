@@ -11,13 +11,7 @@ const cartQuery = ref(route.query.cart || "");
 const cartProducts = ref([]);
 const allProducts = ref([]);
 
-const store = useCartItemsStore();
-const { cartItemsIds, addItemToCart, getIdsFromQuery } = store;
-console.log(cartItemsIds.value);
-// Function to fetch product data
 const fetchProductData = async () => {
-  console.log(cartItemsIds.value);
-  console.log(cartQuery.value );
   if (cartQuery.value && cartQuery.value !== 'empty') {
     try {
       const data = await makeHttpRequest(
@@ -49,14 +43,14 @@ const fetchAllProductsData = async () => {
 
 onMounted(async () => {
   await router.isReady();
-  cartQuery.value = route.query.cart;
+  cartQuery.value = route.query.cart as string;
   fetchProductData();
   fetchAllProductsData();
 });
 
 // Watchers for reactive properties
 watch(() => route.query.cart, (newCartQuery) => {
-  cartQuery.value = newCartQuery;
+  cartQuery.value = newCartQuery as string;
   fetchProductData();
 });
 </script>

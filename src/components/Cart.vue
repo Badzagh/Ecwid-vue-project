@@ -5,60 +5,75 @@ import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import type { Ref } from "vue";
+
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+  options: {
+    choices: { text: string }[];
+  }[];
+  media: {
+    images: { imageOriginalUrl: string }[];
+  };
+}
 
 const props = defineProps<{
-  cartProducts: [];
-  allProducts: []; // Adjust the type according to your product object structure
+  cartProducts: Product[];
+  allProducts: Product[]; // Adjust the type according to your product object structure
 }>();
 
-const store = useCartItemsStore();
 const route = useRoute();
 const router = useRouter();
-const cartQuery = ref("");
+const store = useCartItemsStore();
+
 const {
   cartItemsIds,
   cartItems,
   addItemToCart,
   removeItemToCart,
-  getIdsFromQuery,
   deleteItemFromCart,
 } = store;
 
-const hoveredImageIndex = ref<number>(-1);
+const cartQuery: Ref<string> = ref("");
+const hoveredImageIndex: Ref<number> = ref<number>(-1);
+const totalPriceOfCartItems: Ref<number> = ref(0);
 
-const totalPriceOfCartItems = ref(0);
+// const fetchCalculate = async (data) => {
+//   data.map(() => {});
+//   // Step 1: Create a frequency map
+//   const frequencyMap = data.reduce((acc, id) => {
+//     acc[id] = (acc[id] || 0) + 1;
+//     return acc;
+//   }, {});
 
-const fetchCalculate = async (data) => {
-  data.map(() => {});
-  // Step 1: Create a frequency map
-  const frequencyMap = data.reduce((acc, id) => {
-    acc[id] = (acc[id] || 0) + 1;
-    return acc;
-  }, {});
+//   // Step 2: Transform the frequency map into the desired format
+//   const formattedData = Object.keys(frequencyMap).map((id) => ({
+//     id: parseInt(id),
+//     quantity: frequencyMap[id],
+//   }));
 
-  // Step 2: Transform the frequency map into the desired format
-  const formattedData = Object.keys(frequencyMap).map((id) => ({
-    id: parseInt(id),
-    quantity: frequencyMap[id],
-  }));
+//   console.log(formattedData);
 
-  console.log(formattedData);
-
-  try {
-    const res = await makeHttpRequest(
-      "POST",
-      `/order`,
-      { total: 1000 },
-      "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
-  } catch (error) {
-    console.error("Error fetching product data:", error);
-  }
-};
+//   try {
+//     const res = await makeHttpRequest(
+//       "POST",
+//       `/order`,
+//       { total: 1000 },
+//       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
+//     ); // Adjust endpoint as needed
+//   } catch (error) {
+//     console.error("Error fetching product data:", error);
+//   }
+// };
 
 onMounted(async () => {
   await router.isReady();
-  cartQuery.value = route.query.cart;
+  cartQuery.value = route.query.cart as string;
   console.log("sdf");
   props.cartProducts.map(({ id, price }) => {
     console.log("sdf");
@@ -74,7 +89,7 @@ onMounted(async () => {
 watch(
   () => route.query.cart,
   (newCartQuery) => {
-    cartQuery.value = newCartQuery;
+    cartQuery.value = newCartQuery as string;
   }
 );
 
@@ -90,36 +105,8 @@ watch(
         }
       });
     });
-    // const newTotal = newIds.reduce((total, id) => {
-    //   const product = props.cartProducts.find((product) => product.id === id);
-    //   return product ? total + product.price : total;
-    // }, 0);
-    // totalPriceOfCartItems.value = newTotal;
   }
 );
-
-const responsiveOptions = ref([
-  // {
-  //   breakpoint: "1400px",
-  //   numVisible: 2,
-  //   numScroll: 1,
-  // },
-  // {
-  //   breakpoint: "1199px",
-  //   numVisible: 3,
-  //   numScroll: 1,
-  // },
-  // {
-  //   breakpoint: "767px",
-  //   numVisible: 2,
-  //   numScroll: 1,
-  // },
-  {
-    breakpoint: "575px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-]);
 </script>
 
 <template>
@@ -153,27 +140,6 @@ const responsiveOptions = ref([
               @mouseleave="hoveredImageIndex = -1"
             />
           </a>
-          <!-- <Carousel
-            :value="media.images"
-            :numVisible="1"
-            :numScroll="1"
-            :responsiveOptions="responsiveOptions"
-            circular
-            :autoplayInterval="3000"
-            :show-navigators="false"
-            :show-indicators="false"
-            :class="'!w-fit'"
-          >
-            <template #item="slotProps">
-              <a :href="`/products/product-detail?id=${id}`">
-                <img
-                  class="max-w-[250px] rounded-t-lg  aspect-[1/1]"
-                  :src="slotProps.data.imageOriginalUrl"
-                  alt="product image"
-                />
-              </a>
-            </template>
-          </Carousel> -->
           <div class="w-full flex flex-col justify-between p-2 md:p-5">
             <div
               class="w-full flex flex-col gap-y-2 md:flex-row justify-between"
@@ -344,10 +310,6 @@ const responsiveOptions = ref([
           <p>{{ cartItemsIds.length }} items</p>
           <p>${{ totalPriceOfCartItems }}</p>
         </div>
-        <!-- <div class="flex flex-row justify-between items-center">
-          <p>Sales Tax</p>
-          <p>$33.60</p>
-        </div> -->
         <div class="flex flex-row justify-between items-center">
           <p>Delivery</p>
           <p>Free</p>

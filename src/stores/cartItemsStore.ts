@@ -1,17 +1,21 @@
-import { ref, computed, watch, onMounted, onBeforeMount } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeMount, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router';
+
+interface CartItems {
+  [key: string]: number;
+}
 
 export const useCartItemsStore = defineStore('counter', () => {
   const router = useRouter();
   const route = useRoute();
 
-  const cartItemsIds = ref([])
-  const cartItems = ref({})
-  const cartQuery = ref("")
+  const cartItemsIds = ref<string[]>([])
+  const cartItems = ref<CartItems>({})
+  const cartQuery = ref<string>("")
 
-  function addItemToCart(id) {
-    cartItemsIds.value.push(id)
+  function addItemToCart(id: number) {
+    cartItemsIds.value.push(`${id}`)
     if (cartItems.value[id]) {
       cartItems.value[id] += 1
     } else {
@@ -20,7 +24,7 @@ export const useCartItemsStore = defineStore('counter', () => {
     updateQueryParams()
   }
 
-  function removeItemToCart(id) {
+  function removeItemToCart(id: number) {
     console.log("Sd")
     const index = cartItemsIds.value.findIndex(item => Number(item) === id)
     if (index !== -1) {
@@ -30,7 +34,7 @@ export const useCartItemsStore = defineStore('counter', () => {
     }
   }
 
-  function deleteItemFromCart(id) {
+  function deleteItemFromCart(id:  number) {
     console.log(cartItems.value[id])
     for (let i = 0; i < cartItems.value[id] + 1; i++) {
       const index = cartItemsIds.value.findIndex(item => Number(item) === id)
@@ -80,7 +84,7 @@ export const useCartItemsStore = defineStore('counter', () => {
   onMounted(async () => {
     await router.isReady()
     console.log(route.query.cart)
-    cartQuery.value = route.query.cart
+    cartQuery.value = route.query.cart as string
   });
 
   watch(cartItemsIds, updateQueryParams, { deep: true })

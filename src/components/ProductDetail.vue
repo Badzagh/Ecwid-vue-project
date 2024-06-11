@@ -3,33 +3,43 @@ import { ref } from "vue";
 import { defineProps } from "vue";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
 
+
+interface ProductOptionChoice {
+  text: string;
+}
+
+interface ProductOption {
+  choices: ProductOptionChoice[];
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  options?: ProductOption[];
+}
+
 const props = defineProps<{
-  product: any; // Adjust the type according to your product object structure
+  product: Product; // Adjust the type according to your product object structure
 }>();
 
 const store = useCartItemsStore();
-const { cartItemsIds, addItemToCart } = store;
-// const showWholeDescription = ref({});
-
-// const toggleDescription = (id) => {
-//   showWholeDescription.value[id] = !showWholeDescription.value[id];
-// };
-console.log(props.product);
+const { addItemToCart } = store;
 </script>
 
 <template>
   <div class="flex flex-col xl:flex-row gap-x-6">
     <div
-      class="flex flex-col justify-between max-w-sm  mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow"
+      class="flex flex-col justify-between max-w-sm mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow"
     >
       <div>
-        <a :href="`/products/product-detail?id=${id}`">
-          <img
-            class="rounded-t-lg"
-            :src="props.product.imageUrl"
-            alt="product image"
-          />
-        </a>
+        <img
+          class="rounded-t-lg"
+          :src="props.product.imageUrl"
+          alt="product image"
+        />
       </div>
     </div>
     <div class="flex flex-col">
@@ -44,7 +54,11 @@ console.log(props.product);
       </div>
       <p class="text-base" v-html="props.product.description"></p>
       <div class="flex flex-row gap-x-4 mt-4 xl:my-auto">
-        <p v-if="props.product?.options" class="border border-white py-2 px-4 rounded-md" v-for="({ text }, index) in props.product?.options[0]?.choices">
+        <p
+          v-if="props.product?.options"
+          class="border border-white py-2 px-4 rounded-md"
+          v-for="({ text }, index) in props.product?.options[0]?.choices"
+        >
           {{ text }}
         </p>
       </div>

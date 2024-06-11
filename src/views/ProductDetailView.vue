@@ -4,14 +4,35 @@ import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute } from "vue-router";
 
+interface ProductOptionChoice {
+  text: string;
+}
+
+interface ProductOption {
+  choices: ProductOptionChoice[];
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  options?: ProductOption[];
+}
+
 const route = useRoute();
-const product = ref({});
-const productId = ref("");
+const product = ref<Product>({
+  id: 0,
+  name: "",
+  description: "",
+  price: 0,
+  imageUrl: "",
+});
+const productId = ref<string>("");
 
 productId.value = route.query.id as string;
 
-
-// Function to fetch product data
 const fetchProductData = async () => {
   try {
     const data = await makeHttpRequest(
@@ -34,6 +55,6 @@ onMounted(() => {
 
 <template>
   <main class="">
-    <ProductDetail :product="product" />
+    <ProductDetail :product="product" v-if="product.id"/>
   </main>
 </template>

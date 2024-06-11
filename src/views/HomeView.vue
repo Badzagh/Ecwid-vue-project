@@ -4,8 +4,13 @@ import Products from "../components/Products.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 
+type CategoriesType = {
+  id: number,
+  name: string
+  imageUrl: string
+}
 // Define state variables
-const categories = ref([]);
+const categories = ref<CategoriesType[]>([]);
 const products = ref([]);
 
 // Function to fetch product data
