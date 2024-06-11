@@ -4,7 +4,6 @@ import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
 const route = useRoute();
-console.log(route.name);
 const store = useCartItemsStore();
 const { cartItemsIds, cartQuery, addItemToCart } = store;
 
@@ -29,7 +28,6 @@ const headerClass = computed(() =>
 );
 
 const cartLink = computed(() => {
-  console.log(cartQuery);
   if (cartQuery !== "") {
     return "/cart?cart=" + cartQuery;
   }

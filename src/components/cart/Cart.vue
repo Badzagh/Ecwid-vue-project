@@ -74,10 +74,7 @@ const totalPriceOfCartItems: Ref<number> = ref(0);
 onMounted(async () => {
   await router.isReady();
   cartQuery.value = route.query.cart as string;
-  console.log("sdf");
   props.cartProducts.map(({ id, price }) => {
-    console.log("sdf");
-    console.log(cartItemsIds);
     cartItemsIds.map((cartItemId) => {
       if (id === Number(cartItemId)) {
         totalPriceOfCartItems.value += price;
@@ -98,7 +95,6 @@ watch(
   (newCartProducts) => {
     totalPriceOfCartItems.value = 0;
     newCartProducts.map(({ id, price }) => {
-      console.log("sdf");
       cartItemsIds.map((cartItemId) => {
         if (id === Number(cartItemId)) {
           totalPriceOfCartItems.value += price;

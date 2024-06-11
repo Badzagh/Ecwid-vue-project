@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Categories from "../components/Categories.vue";
-import Products from "../components/Products.vue";
+import Categories from "../components/home/Categories.vue";
+import Products from "../components/home/Products.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 

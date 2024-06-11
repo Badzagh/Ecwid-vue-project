@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Cart from "../components/Cart.vue";
+import Cart from "../components/cart/Cart.vue";
 import { ref, onMounted, watch } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute, useRouter } from "vue-router";

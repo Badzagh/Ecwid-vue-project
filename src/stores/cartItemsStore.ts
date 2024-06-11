@@ -25,7 +25,6 @@ export const useCartItemsStore = defineStore('counter', () => {
   }
 
   function removeItemToCart(id: number) {
-    console.log("Sd")
     const index = cartItemsIds.value.findIndex(item => Number(item) === id)
     if (index !== -1) {
       cartItemsIds.value.splice(index, 1)
@@ -35,7 +34,6 @@ export const useCartItemsStore = defineStore('counter', () => {
   }
 
   function deleteItemFromCart(id:  number) {
-    console.log(cartItems.value[id])
     for (let i = 0; i < cartItems.value[id] + 1; i++) {
       const index = cartItemsIds.value.findIndex(item => Number(item) === id)
       if (index !== -1) {
@@ -59,14 +57,12 @@ export const useCartItemsStore = defineStore('counter', () => {
   }
 
   const getIdsFromQuery = async () => {
-    console.log(cartQuery.value)
     if (cartQuery.value && cartQuery.value !== "empty") {
       if (!cartQuery.value.includes(",")) {
         cartItemsIds.value.push(cartQuery.value)
         cartItems.value[cartQuery.value] = 1
       } else {
         cartQuery.value.split(",").forEach(id => {
-          console.log(id)
           cartItemsIds.value.push(id)
           if (cartItems.value[id]) {
             cartItems.value[id] += 1
@@ -74,8 +70,6 @@ export const useCartItemsStore = defineStore('counter', () => {
             cartItems.value[id] = 1
           }
         })
-        console.log(cartItemsIds.value)
-        console.log(cartItemsIds.value.length)
       }
 
     }
@@ -83,7 +77,6 @@ export const useCartItemsStore = defineStore('counter', () => {
 
   onMounted(async () => {
     await router.isReady()
-    console.log(route.query.cart)
     cartQuery.value = route.query.cart as string
   });
 

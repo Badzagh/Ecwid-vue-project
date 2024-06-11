@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ProductDetail from "../components/ProductDetail.vue";
+import ProductDetail from "../components/product-detail/ProductDetail.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute } from "vue-router";
