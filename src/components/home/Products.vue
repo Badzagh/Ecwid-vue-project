@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useCartItemsStore } from "@/stores/cartItemsStore";
-import { watch } from "vue";
-import { onMounted } from "vue";
 
 import ProductCard from '../common/product-card/ProductCard.vue'
 import { type ProductType } from '@/api/types/products/ProductsType'
@@ -14,9 +11,6 @@ interface ColsI {
 const props = defineProps<{
   products: ProductType[];
 }>();
-
-const store = useCartItemsStore();
-const { addItemToCart } = store;
 
 const productsGridColsClass = computed(() => {
   // const cols = props.products.length >= 5 ? `grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5` : `grid-cols-1 sm:grid-cols-` + props.products.length

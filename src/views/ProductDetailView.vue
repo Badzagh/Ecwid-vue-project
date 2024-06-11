@@ -3,6 +3,7 @@ import ProductDetail from "../components/product-detail/ProductDetail.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute } from "vue-router";
+import { getProductDetailById } from '@/api/endpoints/products/ProductEndpoints'
 
 interface ProductOptionChoice {
   text: string;
@@ -37,17 +38,17 @@ const fetchProductData = async () => {
   try {
     const data = await makeHttpRequest(
       "GET",
-      `/products/${productId.value}`,
+      getProductDetailById + `${productId.value}`,
       null,
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
+    ); 
     product.value = data;
   } catch (error) {
     console.error("Error fetching product data:", error);
   }
 };
 
-// Fetch data when the component is mounted
+
 onMounted(() => {
   fetchProductData();
 });

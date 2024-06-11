@@ -4,6 +4,7 @@ import { ref, onMounted, watch } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute, useRouter } from "vue-router";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
+import { getProductsByIds, getProducts } from '@/api/endpoints/products/ProductEndpoints'
 
 const route = useRoute();
 const router = useRouter();
@@ -16,10 +17,10 @@ const fetchProductData = async () => {
     try {
       const data = await makeHttpRequest(
         "GET",
-        `/products?productId=${cartQuery.value}`,
+        getProductsByIds + `${cartQuery.value}`,
         null,
         "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-      ); // Adjust endpoint as needed
+      ); 
       cartProducts.value = data.items;
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -31,10 +32,10 @@ const fetchAllProductsData = async () => {
   try {
     const data = await makeHttpRequest(
       "GET",
-      `/products`,
+      getProducts,
       null,
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
+    ); 
     allProducts.value = data.items;
   } catch (error) {
     console.error("Error fetching product data:", error);

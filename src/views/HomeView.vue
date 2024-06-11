@@ -3,6 +3,8 @@ import Categories from "../components/home/Categories.vue";
 import Products from "../components/home/Products.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
+import { getProducts } from '@/api/endpoints/products/ProductEndpoints'
+import { getCategories} from '@/api/endpoints/category/CategoryEndpoints'
 
 type CategoriesType = {
   id: number,
@@ -18,10 +20,10 @@ const fetchGetCategoriesData = async () => {
   try {
     const data = await makeHttpRequest(
       "GET",
-      "/categories",
+      getCategories,
       null,
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
+    ); 
     categories.value = data.items;
   } catch (error) {
     console.error("Error fetching product data:", error);
@@ -32,17 +34,17 @@ const fetchProductData = async () => {
   try {
     const data = await makeHttpRequest(
       "GET",
-      "/products",
+      getProducts,
       null,
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
+    ); 
     products.value = data.items;
   } catch (error) {
     console.error("Error fetching product data:", error);
   }
 };
 
-// Fetch data when the component is mounted
+
 onMounted(() => {
   fetchGetCategoriesData()
   fetchProductData();

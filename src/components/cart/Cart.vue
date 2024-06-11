@@ -9,23 +9,10 @@ import type { Ref } from "vue";
 
 import { type CartType } from '../../api/types/cart/CartType'
 
-// interface Product {
-//   id: number;
-//   name: string;
-//   description: string;
-//   imageUrl: string;
-//   price: number;
-//   options: {
-//     choices: { text: string }[];
-//   }[];
-//   media: {
-//     images: { imageOriginalUrl: string }[];
-//   };
-// }
 
 const props = defineProps<{
   cartProducts: CartType[];
-  allProducts: CartType[]; // Adjust the type according to your product object structure
+  allProducts: CartType[];
 }>();
 
 const route = useRoute();
@@ -44,33 +31,6 @@ const cartQuery: Ref<string> = ref("");
 const hoveredImageIndex: Ref<number> = ref<number>(-1);
 const totalPriceOfCartItems: Ref<number> = ref(0);
 
-// const fetchCalculate = async (data) => {
-//   data.map(() => {});
-//   // Step 1: Create a frequency map
-//   const frequencyMap = data.reduce((acc, id) => {
-//     acc[id] = (acc[id] || 0) + 1;
-//     return acc;
-//   }, {});
-
-//   // Step 2: Transform the frequency map into the desired format
-//   const formattedData = Object.keys(frequencyMap).map((id) => ({
-//     id: parseInt(id),
-//     quantity: frequencyMap[id],
-//   }));
-
-//   console.log(formattedData);
-
-//   try {
-//     const res = await makeHttpRequest(
-//       "POST",
-//       `/order`,
-//       { total: 1000 },
-//       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-//     ); // Adjust endpoint as needed
-//   } catch (error) {
-//     console.error("Error fetching product data:", error);
-//   }
-// };
 
 const productsHeightClass = computed(() => {
   if (cartQuery.value !== "empty") {

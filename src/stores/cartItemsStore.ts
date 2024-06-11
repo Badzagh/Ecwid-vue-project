@@ -1,4 +1,4 @@
-import { ref, computed, watch, onMounted, onBeforeMount, type Ref } from 'vue'
+import { ref, computed, watch, onMounted, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router';
 

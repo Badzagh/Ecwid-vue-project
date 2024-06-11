@@ -3,6 +3,7 @@ import Products from "../components/products/Products.vue";
 import { ref, onMounted } from "vue";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { useRoute } from "vue-router";
+import { getProductsByCategoryId } from '@/api/endpoints/products/ProductEndpoints'
 
 const route = useRoute();
 const products = ref([]);
@@ -14,17 +15,16 @@ const fetchProductData = async () => {
   try {
     const data = await makeHttpRequest(
       "GET",
-      `/products?category=${categoryId.value}`,
+      getProductsByCategoryId + `${categoryId.value}`,
       null,
       "public_7BxbJGWyDaZfSQqjVS5Ftr4jzXkS43UD"
-    ); // Adjust endpoint as needed
+    );
     products.value = data.items;
   } catch (error) {
     console.error("Error fetching product data:", error);
   }
 };
 
-// Fetch data when the component is mounted
 onMounted(() => {
   fetchProductData();
 });

@@ -10,7 +10,6 @@ const breadcrumbs = computed(() => {
     const path = '/' + pathArray.slice(0, index + 1).join('/');
     let name = segment.charAt(0).toUpperCase() + segment.slice(1);
 
-    // Custom names for specific routes if needed
     if (segment === 'product-detail') {
       name = 'Product Detail';
     } else if (segment === 'products') {

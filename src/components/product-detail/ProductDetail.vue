@@ -6,7 +6,7 @@ import { type ProductDetailType } from '../../api/types/product-detail/ProductDe
 
 
 const props = defineProps<{
-  product: ProductDetailType; // Adjust the type according to your product object structure
+  product: ProductDetailType;
 }>();
 
 const store = useCartItemsStore();
