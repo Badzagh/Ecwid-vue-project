@@ -3,6 +3,8 @@ import { RouterLink, RouterView, useRoute } from "vue-router";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
+import Header from "./components/common/header/Header.vue";
+
 const route = useRoute();
 const store = useCartItemsStore();
 const { cartItemsIds, cartQuery, addItemToCart } = store;
@@ -21,22 +23,7 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-const headerClass = computed(() =>
-  isScrolled.value && route.name !== "cart"
-    ? "fixed top-0 left-0 right-0 z-10 px-8 bg-gray-800 shadow-lg"
-    : "px-8 bg-gray-800"
-);
 
-const cartLink = computed(() => {
-  if (cartQuery !== "") {
-    return "/cart?cart=" + cartQuery;
-  }
-  if (cartItemsIds.length !== 0) {
-    return "/cart?cart=" + cartItemsIds;
-  } else {
-    return "/cart?cart=empty";
-  }
-});
 
 const breadcrumbs = computed(() => {
   const pathArray = route.path.split('/').filter(segment => segment);
@@ -69,7 +56,7 @@ const breadcrumbs = computed(() => {
       </nav>
     </div>
   </header> -->
-  <header :class="headerClass">
+  <!-- <header :class="headerClass">
     <nav
       class="mx-auto flex max-w-7xl items-center justify-between py-4"
       aria-label="Global"
@@ -99,7 +86,8 @@ const breadcrumbs = computed(() => {
         </RouterLink>
       </div>
     </nav>
-  </header>
+  </header> -->
+  <Header />
   <div class="px-3 py-8 md:p-8">
     <nav v-if="route.name !== 'home'" class="flex mx-auto max-w-[1280px] mb-10" aria-label="Breadcrumb">
       <ol

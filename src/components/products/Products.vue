@@ -4,6 +4,8 @@ import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { watch } from "vue";
 import { onMounted } from "vue";
 
+import ProductCard from '../common/product-card/ProductCard.vue'
+
 interface Product {
   id: number;
   name: string;
@@ -43,7 +45,6 @@ const productsGridColsClass = computed(() => {
   } else {
     return cols[props.products.length] || "grid-cols-2";
   }
-  return cols
 });
 </script>
 
@@ -64,7 +65,7 @@ const productsGridColsClass = computed(() => {
       :key="index"
       class="flex flex-col justify-between max-w-sm shadow"
     >
-      <div>
+      <!-- <div>
         <a :href="`/products/product-detail?id=${id}`">
           <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
         </a>
@@ -88,7 +89,8 @@ const productsGridColsClass = computed(() => {
         >
           Buy
         </button>
-      </div>
+      </div> -->
+      <ProductCard :id="id" :name="name" :imageUrl="imageUrl" :price="price"/>
     </div>
   </div>
 </template>

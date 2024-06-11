@@ -16,10 +16,6 @@ main {
   margin: 0 auto;
 }
 
-main .cart-products-wrapper {
-  height: calc(100svh - 196px);
-  scrollbar-width: none;
-}
 
 main .p-carousel-indicators { 
   display: flex;
@@ -33,6 +29,14 @@ main .p-carousel-indicator {
 
 main .p-highlight { 
   background-color: white
+}
+
+
+@media (min-width: 1280px) {
+  main .cart-products-wrapper {
+    height: calc(100svh - 196px);
+    scrollbar-width: none;
+  }
 }
 
 /* a,

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { defineProps } from "vue";
 import { useCartItemsStore } from "@/stores/cartItemsStore";
 import { makeHttpRequest } from "@/api/httpRequest";
 import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { Ref } from "vue";
-
 
 interface Product {
   id: number;
@@ -71,6 +70,14 @@ const totalPriceOfCartItems: Ref<number> = ref(0);
 //   }
 // };
 
+const productsHeightClass = computed(() => {
+  if (cartQuery.value !== "empty") {
+    return '!h-[180px] sm:!h-[280px]';
+  } else {
+    return '';
+  }
+});
+
 onMounted(async () => {
   await router.isReady();
   cartQuery.value = route.query.cart as string;
@@ -113,7 +120,10 @@ watch(
         TOTAL: ({{ cartItemsIds.length }} item) ${{ totalPriceOfCartItems }}
       </p>
       <div
-        class="cart-products-wrapper overflow-y-scroll pr-3.5 sm:pr-7 mt-6 !h-[180px] sm:!h-[280px] !lg:h-[calc(100svh - 196px)]"
+        :class="[
+          'cart-products-wrapper overflow-y-scroll pr-3.5 sm:pr-7 mt-6',
+          productsHeightClass,
+        ]"
         :key="cartQuery"
       >
         <div
