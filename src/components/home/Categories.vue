@@ -38,7 +38,7 @@ const responsiveOptions = ref([
 
 <template>
   <Carousel
-    :key="categories"
+    :key="categories[0]?.id"
     :value="categories"
     :numVisible="4"
     :numScroll="2"

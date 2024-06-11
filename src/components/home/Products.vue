@@ -5,7 +5,7 @@ import { watch } from "vue";
 import { onMounted } from "vue";
 
 import ProductCard from '../common/product-card/ProductCard.vue'
-import { type ProductType } from '../../api/types/products/ProductType'
+import { type ProductType } from '@/api/types/products/ProductsType'
 
 interface ColsI {
   [key: number]: string;
