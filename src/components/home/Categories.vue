@@ -50,7 +50,7 @@ const responsiveOptions = ref([
       <div class="border-1 surface-border border-round m-2 p-3">
         <div class="mb-3">
           <div class="relative mx-auto">
-            <a :href="`/products?id=${slotProps.data.id}`">
+            <a :href="`/products?categoryId=${slotProps.data.id}`">
               <img
                 :src="slotProps.data.imageUrl"
                 :alt="slotProps.data.name"

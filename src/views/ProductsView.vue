@@ -7,7 +7,7 @@ import { getProductsByCategoryId } from '@/api/endpoints/products/ProductEndpoin
 
 const route = useRoute();
 const products = ref([]);
-const categoryId = ref(route.query.id || "");
+const categoryId = ref(route.query.categoryId || "");
 
 const fetchProductData = async () => {
   try {

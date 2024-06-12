@@ -14,7 +14,7 @@ const { addItemToCart } = store;
 
 <template>
   <div>
-    <a :href="`/products/product-detail?id=${id}`">
+    <a :href="`/products/product-detail?productId=${id}`">
       <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
     </a>
     <div class="py-5">
