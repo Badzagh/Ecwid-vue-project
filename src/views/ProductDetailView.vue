@@ -30,9 +30,7 @@ const product = ref<Product>({
   price: 0,
   imageUrl: "",
 });
-const productId = ref<string>("");
-
-productId.value = route.query.id as string;
+const productId = ref(route.query.id || "");
 
 const fetchProductData = async () => {
   try {
