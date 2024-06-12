@@ -14,9 +14,9 @@ const { addItemToCart } = store;
 
 <template>
   <div>
-    <a :href="`/products/product-detail?productId=${id}`">
+    <RouterLink :to="`/products/product-detail?productId=${id}`">
       <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
-    </a>
+    </RouterLink>
     <div class="py-5">
       <a href="#">
         <h5

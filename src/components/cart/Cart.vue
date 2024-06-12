@@ -95,7 +95,7 @@ watch(
           ) in props.cartProducts"
           class="mt-6 flex md:flex-row gap-x-0 sm:gap-x-6 h-fit border border-gray-700 rounded-lg relative"
         >
-          <a :href="`/products/product-detail?id=${id}`">
+          <RouterLink :to="`/products/product-detail?id=${id}`">
             <img
               class="rounded-t-lg max-w-[150px] sm:max-w-[250px] aspect-[1/1]"
               :src="
@@ -107,7 +107,7 @@ watch(
               @mouseover="hoveredImageIndex = index"
               @mouseleave="hoveredImageIndex = -1"
             />
-          </a>
+          </RouterLink>
           <div class="w-full flex flex-col justify-between p-2 md:p-5">
             <div
               class="w-full flex flex-col gap-y-2 md:flex-row justify-between"
@@ -243,9 +243,9 @@ watch(
             class="flex flex-col justify-between max-w-sm shadow min-w-[200px] mt-10"
           >
             <div>
-              <a :href="`/products/product-detail?id=${id}`">
+              <RouterLink :to="`/products/product-detail?id=${id}`">
                 <img class="rounded-t-lg" :src="imageUrl" alt="product image" />
-              </a>
+              </RouterLink>
               <div class="py-5">
                 <a href="#">
                   <h5

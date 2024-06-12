@@ -50,13 +50,13 @@ const responsiveOptions = ref([
       <div class="border-1 surface-border border-round m-2 p-3">
         <div class="mb-3">
           <div class="relative mx-auto">
-            <a :href="`/products?categoryId=${slotProps.data.id}`">
+            <RouterLink :to="`/products?categoryId=${slotProps.data.id}`">
               <img
                 :src="slotProps.data.imageUrl"
                 :alt="slotProps.data.name"
                 class="w-full border-round aspect-[1/1]"
               />
-            </a>
+            </RouterLink>
           </div>
         </div>
         <div class="mb-3 font-medium">{{ slotProps.data.name }}</div>
